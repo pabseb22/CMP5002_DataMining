@@ -1,0 +1,59 @@
+# This files allows to handle services rather than images.
+
+services:
+  warehouse: 
+    image: postgres:13 # THis image requires environmet variables
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=source
+      # Contenedores son efimeros. Son stateless. Si paran todo se borra de porvida. Se debe poder crear como stateful como guardar la infor.
+    volumes: # Definir donde se guarde en local. Y poner si va primero el local.
+      - "db-data:/var/lib/postgressql/data:rw" #Direetcorio nativo de la imagen
+    # Si queremos conectarnos debemos exponer el puerto
+    ports:
+    - "5432:5435"
+    healthcheck: # Puntos de salud a los contenedores
+      test: ["CMD-SHELL", "pg_isready -U root -d source"]
+      interval: 1m30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+  
+  warehouseui:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=enaunay@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    volumes:
+      - "db-ui-data:/var/lib/pgadmin"
+    ports:
+      - "8085:80"
+
+  ingest-data: # Name of the image. First indentation in services are image names
+    image: ingest-data
+    build: .
+    depends_on: # Basic Dependency
+      warehouse:
+        condition: service_healthy
+    # Recurso de docker para persistencia
+    # To compile is docker build -t ingest-data .
+
+  # airflow require equipo entero para mantenerlo ya que es open source. Hay soluciones mas estables y buenas que es 
+  scheduler:
+    image: mageai/mageai
+    volumes:
+      - scheduler-data:/home/src
+    ports:
+      - "6789:6789"
+    command: /app/run_app.sh mage start scheduler
+
+volumes:
+  db-data:
+  db-ui-data:
+  scheduler-data:
+
+  # Quitar vector de riegso para no tene runa carpeta donde s evaya a gaurdar toda la data.
+  
+# Para correr es docker compose up -d 
+# "-d" significa detached y no se apaga
