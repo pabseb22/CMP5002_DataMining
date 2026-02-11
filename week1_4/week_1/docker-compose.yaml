@@ -30,12 +30,12 @@ services:
     ports:
       - "8085:80"
 
-  ingest-data: # Name of the image. First indentation in services are image names
-    image: ingest-data
-    build: .
-    depends_on: # Basic Dependency
-      warehouse:
-        condition: service_healthy
+  # ingest-data: # Name of the image. First indentation in services are image names
+  #   image: ingest-data
+  #   build: .
+  #   depends_on: # Basic Dependency
+  #     warehouse:
+  #       condition: service_healthy
     # Recurso de docker para persistencia
     # To compile is docker build -t ingest-data .
 

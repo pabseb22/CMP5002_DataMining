@@ -45,7 +45,7 @@ def main(pg_user, pg_password, pg_host, pg_port, pg_db, year, month, target_tabl
     # Crear el motor de la base de datos #Revisar forma odbc y jdbc
     engine = sqlalchemy.create_engine(f'postgresql://{pg_user}:{pg_password}@{pg_host}:{pg_port}/{pg_db}')
 
-
+    print('Ingesting data into Postgres')
     df = pd.read_parquet(url)
     df.to_sql(name=target_table, con=engine, if_exists='replace') #Si existe la tabla la reemplaza. Permite indempotencia.
     print(f'Ingested data to table {target_table} in database {pg_db}')
