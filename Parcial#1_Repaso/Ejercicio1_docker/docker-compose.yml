@@ -1,0 +1,39 @@
+
+services:
+  postgres_container: 
+    image: postgres:13 # THis image requires environmet variables
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=source
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    ports:
+    - "5432:5435"
+    healthcheck: 
+      test: ["CMD-SHELL", "pg_isready -U root -d source"]
+      interval: 1m30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+  
+  postgres_ui:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=enaunay@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    volumes:
+      - "db-ui-data:/var/lib/pgadmin"
+    ports:
+      - "8085:80"
+
+  ingest-data:
+    image: ingest-data
+    build: . # Dir of the Docker file targeted
+    depends_on: 
+      warehouse:
+        condition: service_healthy
+
+volumes:
+  db-data:
+  db-ui-data:

@@ -36,8 +36,8 @@ services:
   #   depends_on: # Basic Dependency
   #     warehouse:
   #       condition: service_healthy
-    # Recurso de docker para persistencia
-    # To compile is docker build -t ingest-data .
+  #   # Recurso de docker para persistencia
+  #   # To compile is docker build -t ingest-data .
 
   # airflow require equipo entero para mantenerlo ya que es open source. Hay soluciones mas estables y buenas que es 
   scheduler:

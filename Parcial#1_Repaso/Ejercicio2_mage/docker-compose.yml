@@ -1,0 +1,13 @@
+services:
+  mage:
+    image: mageai/mageai:latest
+    ports:
+      - "6789:6789"
+    environment:
+      # Mage vive con proyecto en /home/src por convención
+      MAGE_DATA_DIR: /home/src
+
+    volumes:
+      # Bind mount: proyecto Mage en tu repo
+      - ./mage:/home/src
+    command: /app/run_app.sh mage start scheduler
