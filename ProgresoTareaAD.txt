@@ -1,0 +1,45 @@
+Aquí tienes un resumen claro y breve de lo que hicimos y qué podrías preguntarle al profesor.
+
+Resumen de cambios (en lenguaje simple)
+
+Arreglamos el proyecto JSF
+
+Movimos los archivos del profesor index.xhtml y web.xml a la ruta correcta de Maven para que JSF funcione en WildFly.
+Creamos el bean CDI UserBean que llama al REST y muestra la respuesta en la misma página.
+Ajustamos Maven para Java 17
+
+Configuramos el compilador en ambos proyectos para evitar errores de Java viejo.
+Actualizamos el plugin maven-war-plugin para que compile con Java 17.
+Arreglamos Docker
+
+Creamos un Dockerfile correcto para JSF (antes no usaba WildFly).
+Cambiamos la imagen base a quay.io/wildfly/wildfly:latest porque los tags anteriores no existían.
+Arreglamos docker-compose
+
+Añadimos healthcheck para que REST inicie primero y JSF espere.
+Configuramos la URL interna para que JSF llame a REST usando el hostname del servicio.
+Mejoramos el readme.txt
+
+Añadimos instrucciones claras para instalar Java/Maven/Docker en WSL y cómo correr el proyecto.
+Dónde probar
+
+REST: http://localhost:8081/app-rest/api/saludo
+JSF (botón): http://localhost:8080/app-jsf/
+Preguntas útiles para tu profesor
+
+WildFly exacto:
+“En el enunciado pide WildFly 37.0.0.Final, pero en Quay no existe ese tag. ¿Puedo usar latest o debo fijar una versión específica que esté disponible?”
+
+Docker Hub obligatorio:
+“¿Debemos entregar los enlaces de Docker Hub en el readme.txt o basta con incluir los comandos exactos de push?”
+
+Estructura exacta de README:
+“¿Quiere un formato específico para el readme.txt (por ejemplo: Integrantes, pasos de build, pasos de run, URLs de prueba)?”
+
+Prueba local antes de Docker:
+“¿Es obligatorio probar las apps en IntelliJ antes de Docker, o basta con validar en Docker Compose?”
+
+CDI y beans.xml:
+“¿Debemos incluir explícitamente beans.xml en JSF, o es opcional con Jakarta EE 10?”
+
+Si quieres, también puedo preparar el bloque exacto de readme.txt con integrantes y participación del grupo listo para pegar.
